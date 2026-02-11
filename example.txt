@@ -1,0 +1,104 @@
+Câu 1: Python là ngôn ngữ lập trình gì?
+A. Ngôn ngữ biên dịch
+B. Ngôn ngữ thông dịch*
+C. Ngôn ngữ máy
+D. Ngôn ngữ Assembly
+Mức: Nhận biết
+
+Câu 2: Đọc đoạn trích sau đây: 
+"Ở Pháp, vương quyền là đỉnh cao của lâu đài phong kiến và chuyên chế. Nhà vua luôn có quyền 
+hành chuyên chế và vô hạn; quyết định mọi công việc đối nội và đối ngoại của quốc gia. Triều 
+vua Lu-I XVI là một sự chuyên chế cao độ."
+a. Chính sách cai trị của nhà nước phong kiến chuyên chế gây bất mãn cho nhân dân.
+b. Sự tồn tại của nhà nước quân chủ lập hiến gây bất mãn cho tầng lớp quý tộc mới.
+c. Mâu thuẫn giữa đẳng cấp thứ ba với đẳng cấp tăng lữ và quý tộc ngày càng sâu sắc.
+d. Tình hình chính trị ở Pháp dưới triều vua Lu-I XVI khủng hoảng trầm trọng.*
+Mức: Vận dụng
+
+Câu 3: Kết quả của 5 // 2 trong Python là gì?
+A. 2.5
+B. 2*
+C. 3
+D. 2.0
+Mức: Thông hiểu
+
+Câu 4: Cho các loại tế bào sau:
+    1. Quản bào.
+    2. Tế bào kèm.
+    3. Mạch ống.
+    4. Ống gỗ.
+    5. Ống rây.
+Mạch gỗ được cấu tạo từ (các) loại tế bào nào?
+* 13
+Mức: Vận dụng
+
+Câu 5: List trong Python có thể chứa các kiểu dữ liệu khác nhau không?
+A. Không, chỉ chứa một kiểu
+B. Có, có thể chứa nhiều kiểu*
+C. Chỉ chứa số
+D. Chỉ chứa chuỗi
+Mức: Thông hiểu
+
+Câu 6: Xét các phát biểu sau về đặc điểm của quá trình phát triển kinh tế - xã hội Việt Nam từ sau năm 1975 đến trước Đổi mới (1986):
+a. Sản xuất nông nghiệp tập thể phát triển mạnh, năng suất và hiệu quả cao.
+b. Các thành phần kinh tế đều được khuyến khích phát triển.*
+c. Nền kinh tế kế hoạch hóa tập trung, bao cấp bộc lộ nhiều yếu kém.
+d. Đời sống nhân dân được cải thiện đáng kể, xã hội ổn định.
+Mức: Thông hiểu
+
+Câu 7: Decorator trong Python được ký hiệu bằng?
+A. #
+B. @*
+C. $
+D. &
+Mức: Vận dụng
+
+Câu 8: Hệ số trong phương trình hóa học 2H2 + O2 → 2H2O là bao nhiêu?
+* 2
+Mức: Nhận biết
+
+Câu 9: List comprehension nào sau đây tạo list các số chẵn từ 0 đến 10?
+A. [x for x in range(10) if x % 2 == 1]
+B. [x for x in range(11) if x % 2 == 0]*
+C. [x for x in range(10)]
+D. [x*2 for x in range(5)]
+Mức: Vận dụng
+
+Câu 10: Các nhận định sau đây về cuộc Cách mạng tháng Tám năm 1945:
+a. Đây là cuộc cách mạng giải phóng dân tộc do giai cấp công nhân lãnh đạo.*
+b. Cuộc cách mạng chỉ diễn ra ở miền Bắc Việt Nam.
+c. Thắng lợi của cách mạng đánh dấu sự ra đời của Nhà nước Việt Nam Dân chủ Cộng hòa.
+d. Mục tiêu của cách mạng là đánh đổ chế độ phong kiến, xây dựng chủ nghĩa xã hội.
+Mức: Vận dụng
+
+Câu 11: Kiểu dữ liệu nào trong Python là immutable (không thay đổi)?
+A. List
+B. Dictionary
+C. Tuple*
+D. Set
+Mức: Nhận biết
+
+Câu 12: Nguyên tử của nguyên tố hóa học X có tổng số hạt proton, nơtron, electron là 52. Số hạt mang điện nhiều hơn số hạt không mang điện là 16. Số nơtron của X là bao nhiêu?
+* 18
+Mức: Vận dụng
+
+Câu 13: Lambda function trong Python là gì?
+A. Hàm đệ quy
+B. Hàm ẩn danh*
+C. Hàm generator
+D. Hàm built-in
+Mức: Thông hiểu
+
+Câu 14: Phát biểu nào sau đây đúng về đặc điểm của thực vật C4?
+a. Có 2 loại tế bào quang hợp: tế bào bao bó mạch và tế bào mô giậu.*
+b. Cố định CO2 ban đầu thành hợp chất 3 carbon.
+c. Không có hiện tượng hô hấp sáng.
+d. Quang hợp hiệu quả hơn thực vật C3 trong điều kiện nhiệt độ cao, cường độ sáng mạnh.*
+Mức: Vận dụng
+
+Câu 15: Module nào dùng để làm việc với file JSON?
+A. file
+B. json*
+C. jsonlib
+D. data
+Mức: Nhận biết

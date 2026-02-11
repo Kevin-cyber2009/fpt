@@ -1,0 +1,104 @@
+Câu 1: Python là ngôn ngữ lập trình gì?
+A. Ngôn ngữ biên dịch
+B. Ngôn ngữ thông dịch*
+C. Ngôn ngữ máy
+D. Ngôn ngữ Assembly
+Mức: Nhận biết
+
+Câu 2: Hàm nào dùng để in ra màn hình trong Python?
+A. echo()
+B. printf()
+C. print()*
+D. console.log()
+Mức: Nhận biết
+
+Câu 3: Kết quả của 5 // 2 trong Python là gì?
+A. 2.5
+B. 2*
+C. 3
+D. 2.0
+Mức: Thông hiểu
+
+Câu 4: List trong Python có thể chứa các kiểu dữ liệu khác nhau không?
+A. Không, chỉ chứa một kiểu
+B. Có, có thể chứa nhiều kiểu*
+C. Chỉ chứa số
+D. Chỉ chứa chuỗi
+Mức: Thông hiểu
+
+Câu 5: Decorator trong Python được ký hiệu bằng?
+A. #
+B. @*
+C. $
+D. &
+Mức: Vận dụng
+
+Câu 6: List comprehension nào sau đây tạo list các số chẵn từ 0 đến 10?
+A. [x for x in range(10) if x % 2 == 1]
+B. [x for x in range(11) if x % 2 == 0]*
+C. [x for x in range(10)]
+D. [x*2 for x in range(5)]
+Mức: Vận dụng
+
+Câu 7: Kiểu dữ liệu nào trong Python là immutable (không thay đổi)?
+A. List
+B. Dictionary
+C. Tuple*
+D. Set
+Mức: Nhận biết
+
+Câu 8: Cách nào để tạo comment nhiều dòng trong Python?
+A. /* ... */
+B. // ... //
+C. ''' ... '''*
+D. <!-- ... -->
+Mức: Nhận biết
+
+Câu 9: Lambda function trong Python là gì?
+A. Hàm đệ quy
+B. Hàm ẩn danh*
+C. Hàm generator
+D. Hàm built-in
+Mức: Thông hiểu
+
+Câu 10: Kết quả của [1,2,3] + [4,5,6] là gì?
+A. [5,7,9]
+B. [1,2,3,4,5,6]*
+C. [[1,2,3],[4,5,6]]
+D. Error
+Mức: Thông hiểu
+
+Câu 11: Context manager trong Python sử dụng từ khóa nào?
+A. try-except
+B. with*
+C. using
+D. context
+Mức: Vận dụng
+
+Câu 12: Generator trong Python sử dụng từ khóa nào?
+A. return
+B. yield*
+C. generate
+D. produce
+Mức: Vận dụng
+
+Câu 13: Từ khóa nào dùng để kế thừa class trong Python?
+A. extends
+B. implements
+C. Đặt tên class cha trong ngoặc đơn*
+D. inherit
+Mức: Nhận biết
+
+Câu 14: Module nào dùng để làm việc với file JSON?
+A. file
+B. json*
+C. jsonlib
+D. data
+Mức: Nhận biết
+
+Câu 15: Dict comprehension nào tạo dictionary từ list [1,2,3]?
+A. {x for x in [1,2,3]}
+B. {x: x**2 for x in [1,2,3]}*
+C. [x: x**2 for x in [1,2,3]]
+D. {x, x**2 for x in [1,2,3]}
+Mức: Vận dụng

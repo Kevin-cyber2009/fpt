@@ -1,0 +1,551 @@
+{
+  "questions": [
+    {
+      "question": "Python là ngôn ngữ lập trình gì?",
+      "answers": [
+        "Ngôn ngữ biên dịch",
+        "Ngôn ngữ thông dịch",
+        "Ngôn ngữ máy",
+        "Ngôn ngữ Assembly"
+      ],
+      "correct": 1,
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Hàm nào dùng để in ra màn hình trong Python?",
+      "answers": [
+        "echo()",
+        "printf()",
+        "print()",
+        "console.log()"
+      ],
+      "correct": 2,
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Kết quả của 5 // 2 trong Python là gì?",
+      "answers": [
+        "2.5",
+        "2",
+        "3",
+        "2.0"
+      ],
+      "correct": 1,
+      "level": "thonghieu"
+    },
+    {
+      "question": "List trong Python có thể chứa các kiểu dữ liệu khác nhau không?",
+      "answers": [
+        "Không, chỉ chứa một kiểu",
+        "Có, có thể chứa nhiều kiểu",
+        "Chỉ chứa số",
+        "Chỉ chứa chuỗi"
+      ],
+      "correct": 1,
+      "level": "thonghieu"
+    },
+    {
+      "question": "Decorator trong Python được ký hiệu bằng?",
+      "answers": [
+        "#",
+        "@",
+        "$",
+        "&"
+      ],
+      "correct": 1,
+      "level": "vandung"
+    },
+    {
+      "question": "List comprehension nào sau đây tạo list các số chẵn từ 0 đến 10?",
+      "answers": [
+        "[x for x in range(10) if x % 2 == 1]",
+        "[x for x in range(11) if x % 2 == 0]",
+        "[x for x in range(10)]",
+        "[x2 for x in range(5)]"
+      ],
+      "correct": 3,
+      "level": "vandung"
+    },
+    {
+      "question": "Kiểu dữ liệu nào trong Python là immutable (không thay đổi)?",
+      "answers": [
+        "List",
+        "Dictionary",
+        "Tuple",
+        "Set"
+      ],
+      "correct": 2,
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Cách nào để tạo comment nhiều dòng trong Python?",
+      "answers": [
+        "/ ... /",
+        "// ... //",
+        "''' ... '''",
+        "<!-- ... -->"
+      ],
+      "correct": 2,
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Lambda function trong Python là gì?",
+      "answers": [
+        "Hàm đệ quy",
+        "Hàm ẩn danh",
+        "Hàm generator",
+        "Hàm built-in"
+      ],
+      "correct": 1,
+      "level": "thonghieu"
+    },
+    {
+      "question": "Kết quả của [1,2,3] + [4,5,6] là gì?",
+      "answers": [
+        "[5,7,9]",
+        "[1,2,3,4,5,6]",
+        "[[1,2,3],[4,5,6]]",
+        "Error"
+      ],
+      "correct": 1,
+      "level": "thonghieu"
+    },
+    {
+      "question": "Context manager trong Python sử dụng từ khóa nào?",
+      "answers": [
+        "try-except",
+        "with",
+        "using",
+        "context"
+      ],
+      "correct": 1,
+      "level": "vandung"
+    },
+    {
+      "question": "Generator trong Python sử dụng từ khóa nào?",
+      "answers": [
+        "return",
+        "yield",
+        "generate",
+        "produce"
+      ],
+      "correct": 1,
+      "level": "vandung"
+    },
+    {
+      "question": "Từ khóa nào dùng để kế thừa class trong Python?",
+      "answers": [
+        "extends",
+        "implements",
+        "Đặt tên class cha trong ngoặc đơn",
+        "inherit"
+      ],
+      "correct": 2,
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Module nào dùng để làm việc với file JSON?",
+      "answers": [
+        "file",
+        "json",
+        "jsonlib",
+        "data"
+      ],
+      "correct": 1,
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Dict comprehension nào tạo dictionary từ list [1,2,3]?",
+      "answers": [
+        "{x for x in [1,2,3]}",
+        "{x: x2 for x in [1,2,3]}",
+        "[x: x2 for x in [1,2,3]]",
+        "{x, x2 for x in [1,2,3]}"
+      ],
+      "correct": 3,
+      "level": "vandung"
+    },
+    {
+      "question": "Python là ngôn ngữ lập trình gì?",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "Ngôn ngữ biên dịch",
+          "is_statement": true
+        },
+        {
+          "text": "Ngôn ngữ thông dịch",
+          "is_statement": true
+        },
+        {
+          "text": "Ngôn ngữ máy",
+          "is_statement": true
+        },
+        {
+          "text": "Ngôn ngữ Assembly",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1
+      ],
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Đọc đoạn trích sau đây:",
+      "context": "\"Ở Pháp, vương quyền là đỉnh cao của lâu đài phong kiến và chuyên chế. Nhà vua luôn có quyền hành chuyên chế và vô hạn; quyết định mọi công việc đối nội và đối ngoại của quốc gia. Triều vua Lu-I XVI là một sự chuyên chế cao độ.\"",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "Chính sách cai trị của nhà nước phong kiến chuyên chế gây bất mãn cho nhân dân.",
+          "is_statement": true
+        },
+        {
+          "text": "Sự tồn tại của nhà nước quân chủ lập hiến gây bất mãn cho tầng lớp quý tộc mới.",
+          "is_statement": true
+        },
+        {
+          "text": "Mâu thuẫn giữa đẳng cấp thứ ba với đẳng cấp tăng lữ và quý tộc ngày càng sâu sắc.",
+          "is_statement": true
+        },
+        {
+          "text": "Tình hình chính trị ở Pháp dưới triều vua Lu-I XVI khủng hoảng trầm trọng.",
+          "is_statement": true
+        }
+      ],
+      "correct": 3,
+      "correct_answers": [
+        3
+      ],
+      "level": "vandung"
+    },
+    {
+      "question": "Kết quả của 5 // 2 trong Python là gì?",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "2.5",
+          "is_statement": true
+        },
+        {
+          "text": "2",
+          "is_statement": true
+        },
+        {
+          "text": "3",
+          "is_statement": true
+        },
+        {
+          "text": "2.0",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1
+      ],
+      "level": "thonghieu"
+    },
+    {
+      "question": "Ống rây.",
+      "context": "",
+      "type": "short_answer",
+      "answers": [],
+      "correct": 0,
+      "correct_answers": [],
+      "level": "vandung",
+      "correct_answer": "13"
+    },
+    {
+      "question": "List trong Python có thể chứa các kiểu dữ liệu khác nhau không?",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "Không, chỉ chứa một kiểu",
+          "is_statement": true
+        },
+        {
+          "text": "Có, có thể chứa nhiều kiểu",
+          "is_statement": true
+        },
+        {
+          "text": "Chỉ chứa số",
+          "is_statement": true
+        },
+        {
+          "text": "Chỉ chứa chuỗi",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1
+      ],
+      "level": "thonghieu"
+    },
+    {
+      "question": "Xét các phát biểu sau về đặc điểm của quá trình phát triển kinh tế - xã hội Việt Nam từ sau năm 1975 đến trước Đổi mới (1986):",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "Sản xuất nông nghiệp tập thể phát triển mạnh, năng suất và hiệu quả cao.",
+          "is_statement": true
+        },
+        {
+          "text": "Các thành phần kinh tế đều được khuyến khích phát triển.",
+          "is_statement": true
+        },
+        {
+          "text": "Nền kinh tế kế hoạch hóa tập trung, bao cấp bộc lộ nhiều yếu kém.",
+          "is_statement": true
+        },
+        {
+          "text": "Đời sống nhân dân được cải thiện đáng kể, xã hội ổn định.",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1
+      ],
+      "level": "thonghieu"
+    },
+    {
+      "question": "Decorator trong Python được ký hiệu bằng?",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "#",
+          "is_statement": true
+        },
+        {
+          "text": "@",
+          "is_statement": true
+        },
+        {
+          "text": "$",
+          "is_statement": true
+        },
+        {
+          "text": "&",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1
+      ],
+      "level": "vandung"
+    },
+    {
+      "question": "Hệ số trong phương trình hóa học 2H2 + O2 → 2H2O là bao nhiêu?",
+      "context": "",
+      "type": "short_answer",
+      "answers": [],
+      "correct": 0,
+      "correct_answers": [],
+      "level": "nhanbiet",
+      "correct_answer": "2"
+    },
+    {
+      "question": "List comprehension nào sau đây tạo list các số chẵn từ 0 đến 10?",
+      "context": "",
+      "type": "true_false",
+      "answers": [
+        {
+          "text": "[x for x in range(10) if x % 2 == 1]",
+          "is_statement": true
+        },
+        {
+          "text": "[x for x in range(11) if x % 2 == 0]",
+          "is_statement": true
+        },
+        {
+          "text": "[x for x in range(10)]",
+          "is_statement": true
+        },
+        {
+          "text": "[x2 for x in range(5)]",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1,
+        3
+      ],
+      "level": "vandung"
+    },
+    {
+      "question": "Các nhận định sau đây về cuộc Cách mạng tháng Tám năm 1945:",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "Đây là cuộc cách mạng giải phóng dân tộc do giai cấp công nhân lãnh đạo.",
+          "is_statement": true
+        },
+        {
+          "text": "Cuộc cách mạng chỉ diễn ra ở miền Bắc Việt Nam.",
+          "is_statement": true
+        },
+        {
+          "text": "Thắng lợi của cách mạng đánh dấu sự ra đời của Nhà nước Việt Nam Dân chủ Cộng hòa.",
+          "is_statement": true
+        },
+        {
+          "text": "Mục tiêu của cách mạng là đánh đổ chế độ phong kiến, xây dựng chủ nghĩa xã hội.",
+          "is_statement": true
+        }
+      ],
+      "correct": 0,
+      "correct_answers": [
+        0
+      ],
+      "level": "vandung"
+    },
+    {
+      "question": "Kiểu dữ liệu nào trong Python là immutable (không thay đổi)?",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "List",
+          "is_statement": true
+        },
+        {
+          "text": "Dictionary",
+          "is_statement": true
+        },
+        {
+          "text": "Tuple",
+          "is_statement": true
+        },
+        {
+          "text": "Set",
+          "is_statement": true
+        }
+      ],
+      "correct": 2,
+      "correct_answers": [
+        2
+      ],
+      "level": "nhanbiet"
+    },
+    {
+      "question": "Nguyên tử của nguyên tố hóa học X có tổng số hạt proton, nơtron, electron là 52. Số hạt mang điện nhiều hơn số hạt không mang điện là 16. Số nơtron của X là bao nhiêu?",
+      "context": "",
+      "type": "short_answer",
+      "answers": [],
+      "correct": 0,
+      "correct_answers": [],
+      "level": "vandung",
+      "correct_answer": "18"
+    },
+    {
+      "question": "Lambda function trong Python là gì?",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "Hàm đệ quy",
+          "is_statement": true
+        },
+        {
+          "text": "Hàm ẩn danh",
+          "is_statement": true
+        },
+        {
+          "text": "Hàm generator",
+          "is_statement": true
+        },
+        {
+          "text": "Hàm built-in",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1
+      ],
+      "level": "thonghieu"
+    },
+    {
+      "question": "Phát biểu nào sau đây đúng về đặc điểm của thực vật C4?",
+      "context": "",
+      "type": "true_false",
+      "answers": [
+        {
+          "text": "Có 2 loại tế bào quang hợp: tế bào bao bó mạch và tế bào mô giậu.",
+          "is_statement": true
+        },
+        {
+          "text": "Cố định CO2 ban đầu thành hợp chất 3 carbon.",
+          "is_statement": true
+        },
+        {
+          "text": "Không có hiện tượng hô hấp sáng.",
+          "is_statement": true
+        },
+        {
+          "text": "Quang hợp hiệu quả hơn thực vật C3 trong điều kiện nhiệt độ cao, cường độ sáng mạnh.",
+          "is_statement": true
+        }
+      ],
+      "correct": 0,
+      "correct_answers": [
+        0,
+        3
+      ],
+      "level": "vandung"
+    },
+    {
+      "question": "Module nào dùng để làm việc với file JSON?",
+      "context": "",
+      "type": "multiple_choice",
+      "answers": [
+        {
+          "text": "file",
+          "is_statement": true
+        },
+        {
+          "text": "json",
+          "is_statement": true
+        },
+        {
+          "text": "jsonlib",
+          "is_statement": true
+        },
+        {
+          "text": "data",
+          "is_statement": true
+        }
+      ],
+      "correct": 1,
+      "correct_answers": [
+        1
+      ],
+      "level": "nhanbiet"
+    }
+  ],
+  "files": [
+    {
+      "name": "EX.txt",
+      "path": "D:/SUPERSIGMA/EX.txt",
+      "question_count": 15,
+      "upload_date": "2026-01-25 14:42:29"
+    },
+    {
+      "name": "example.txt",
+      "path": "D:/SUPERSIGMA/example.txt",
+      "question_count": 15,
+      "upload_date": "2026-02-10 18:35:57"
+    }
+  ]
+}
