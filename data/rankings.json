@@ -1,5 +1,12 @@
 [
   {
+    "name": "34",
+    "score": 7700,
+    "won": false,
+    "monsters_killed": 6,
+    "date": "2026-02-12 18:52:42"
+  },
+  {
     "name": "21",
     "score": 6000,
     "won": false,
