@@ -86,252 +86,392 @@ class UI:
         self._shoot_frame = 0
 
     # ══════════════════════════════════════════════════════════
-    #   ENHANCED DOOM BACKGROUND - CORRIDOR WITH DEPTH
+    #   ★★★ ULTRA BEAUTIFUL DOOM BACKGROUND ★★★
+    #   3D Perspective Corridor - Retro FPS Style
     # ══════════════════════════════════════════════════════════
     def draw_background(self, screen):
-        """Vẽ background DOOM corridor với depth và lighting nâng cao"""
+        """
+        DOOM/Quake style 3D corridor với:
+        - Perspective walls với vanishing point
+        - Metal panels với rivets, lights
+        - Hexagonal floor tiles
+        - Volumetric ceiling lights
+        - Atmospheric depth fog
+        - Industrial doorway nơi monster đứng
+        """
         W, H = self.width, self.height
         t = pygame.time.get_ticks()
         
-        # ═══ SKY/CEILING GRADIENT ═══
+        # ═══ CEILING GRADIENT (DARK SKY) ═══
         for y in range(H // 2):
             progress = y / (H / 2)
-            r = int(15 + progress * 15)
-            g = int(18 + progress * 18)
-            b = int(25 + progress * 25)
+            r = int(8 + progress * 14)
+            g = int(10 + progress * 16)
+            b = int(18 + progress * 24)
             pygame.draw.line(screen, (r, g, b), (0, y), (W, y))
         
-        # ═══ FLOOR GRADIENT WITH PERSPECTIVE ═══
+        # ═══ FLOOR GRADIENT (PERSPECTIVE DARKENING) ═══
         for y in range(H // 2, H):
             progress = (y - H/2) / (H/2)
-            # Darker near horizon, lighter closer to player
-            base = int(30 + progress * 35)
-            pygame.draw.line(screen, (base, base - 5, base - 10), (0, y), (W, y))
+            base = int(22 + progress * 42)
+            pygame.draw.line(screen, (base, base - 4, base - 10), (0, y), (W, y))
         
         horizon_y = H // 2
+        vanish_x = W // 2
+        vanish_y = horizon_y
         
-        # ═══ CORRIDOR WALLS WITH PERSPECTIVE ═══
-        # Left wall
-        wall_left_top = int(W * 0.20)
-        wall_left_bottom = int(W * 0.05)
+        # ═══ PERSPECTIVE CORRIDOR WALLS ═══
+        # Left wall với perspective
+        wall_left_near = int(W * 0.02)
+        wall_left_far = int(W * 0.22)
         
-        wall_left_points = [
+        left_wall = [
             (0, 0),
-            (wall_left_top, horizon_y - 120),
-            (wall_left_top, horizon_y + 120),
-            (wall_left_bottom, H)
+            (wall_left_far, vanish_y - 135),
+            (wall_left_far, vanish_y + 135),
+            (wall_left_near, H)
         ]
         
-        # Right wall
-        wall_right_top = int(W * 0.80)
-        wall_right_bottom = int(W * 0.95)
+        # Right wall với perspective
+        wall_right_near = int(W * 0.98)
+        wall_right_far = int(W * 0.78)
         
-        wall_right_points = [
+        right_wall = [
             (W, 0),
-            (wall_right_top, horizon_y - 120),
-            (wall_right_top, horizon_y + 120),
-            (wall_right_bottom, H)
+            (wall_right_far, vanish_y - 135),
+            (wall_right_far, vanish_y + 135),
+            (wall_right_near, H)
         ]
         
-        # Draw walls with lighting
-        for points, base_color in [(wall_left_points, (55, 60, 70)), 
-                                   (wall_right_points, (50, 55, 65))]:
-            pygame.draw.polygon(screen, base_color, points)
-            pygame.draw.polygon(screen, (75, 80, 90), points, 3)
+        # Draw walls với shading
+        pygame.draw.polygon(screen, (48, 53, 62), left_wall)
+        pygame.draw.polygon(screen, (44, 49, 58), right_wall)
+        pygame.draw.polygon(screen, (68, 73, 82), left_wall, 3)
+        pygame.draw.polygon(screen, (64, 69, 78), right_wall, 3)
         
-        # ═══ WALL PANELS AND DETAILS ═══
-        # Left wall panels
-        for panel_y in range(80, H - 80, 100):
-            panel_w = 50
-            panel_h = 85
-            
-            # Perspective calculation
-            y_progress = panel_y / H
-            panel_x = int(wall_left_bottom + (wall_left_top - wall_left_bottom) * (1 - y_progress))
-            
-            if panel_x > 20 and panel_x < W * 0.3:
-                panel_rect = pygame.Rect(panel_x - panel_w, panel_y, panel_w, panel_h)
-                
-                # Panel background
-                pygame.draw.rect(screen, (65, 70, 80), panel_rect)
-                pygame.draw.rect(screen, (45, 50, 60), panel_rect, 2)
-                
-                # Panel details
-                for i in range(3):
-                    detail_y = panel_rect.top + 15 + i * 25
-                    pygame.draw.rect(screen, (75, 80, 90), 
-                                   (panel_rect.left + 5, detail_y, panel_rect.width - 10, 18))
-                    pygame.draw.rect(screen, (55, 60, 70), 
-                                   (panel_rect.left + 5, detail_y, panel_rect.width - 10, 18), 1)
-                
-                # Rivets
-                for rx in [panel_rect.left + 10, panel_rect.right - 10]:
-                    for ry in [panel_rect.top + 20, panel_rect.bottom - 20]:
-                        pygame.draw.circle(screen, (85, 90, 100), (rx, ry), 4)
-                        pygame.draw.circle(screen, (40, 45, 55), (rx, ry), 2)
-                
-                # Blinking light
-                if (t // 600 + panel_y // 100) % 3 == 0:
-                    light_color = (0, 255, 150)
-                else:
-                    light_color = (0, 80, 50)
-                
-                pygame.draw.rect(screen, light_color, 
-                               (panel_rect.centerx - 8, panel_rect.top + 8, 16, 8))
+        # Inner shadow cho depth
+        shadow_left = [
+            (left_wall[1][0] - 12, left_wall[1][1]),
+            (left_wall[2][0] - 12, left_wall[2][1]),
+            (left_wall[3][0] + 25, left_wall[3][1]),
+            (left_wall[0][0] + 25, left_wall[0][1])
+        ]
+        shadow_surf = pygame.Surface((W, H), pygame.SRCALPHA)
+        pygame.draw.polygon(shadow_surf, (0, 0, 0, 70), shadow_left)
+        screen.blit(shadow_surf, (0, 0))
         
-        # Right wall panels (mirror)
-        for panel_y in range(80, H - 80, 100):
-            panel_w = 50
-            panel_h = 85
-            
-            y_progress = panel_y / H
-            panel_x = int(wall_right_bottom + (wall_right_top - wall_right_bottom) * (1 - y_progress))
-            
-            if panel_x < W - 20 and panel_x > W * 0.7:
-                panel_rect = pygame.Rect(panel_x, panel_y, panel_w, panel_h)
-                
-                pygame.draw.rect(screen, (65, 70, 80), panel_rect)
-                pygame.draw.rect(screen, (45, 50, 60), panel_rect, 2)
-                
-                for i in range(3):
-                    detail_y = panel_rect.top + 15 + i * 25
-                    pygame.draw.rect(screen, (75, 80, 90), 
-                                   (panel_rect.left + 5, detail_y, panel_rect.width - 10, 18))
-                
-                for rx in [panel_rect.left + 10, panel_rect.right - 10]:
-                    for ry in [panel_rect.top + 20, panel_rect.bottom - 20]:
-                        pygame.draw.circle(screen, (85, 90, 100), (rx, ry), 4)
-                        pygame.draw.circle(screen, (40, 45, 55), (rx, ry), 2)
-                
-                if (t // 600 + panel_y // 100) % 3 == 0:
-                    light_color = (0, 255, 150)
-                else:
-                    light_color = (0, 80, 50)
-                
-                pygame.draw.rect(screen, light_color, 
-                               (panel_rect.centerx - 8, panel_rect.top + 8, 16, 8))
+        shadow_right = [
+            (right_wall[1][0] + 12, right_wall[1][1]),
+            (right_wall[2][0] + 12, right_wall[2][1]),
+            (right_wall[3][0] - 25, right_wall[3][1]),
+            (right_wall[0][0] - 25, right_wall[0][1])
+        ]
+        shadow_surf = pygame.Surface((W, H), pygame.SRCALPHA)
+        pygame.draw.polygon(shadow_surf, (0, 0, 0, 70), shadow_right)
+        screen.blit(shadow_surf, (0, 0))
         
-        # ═══ CEILING LIGHTS WITH GLOW ═══
-        num_lights = 5
+        # ═══ DETAILED WALL PANELS với RIVETS ═══
+        num_panels = 10
+        for i in range(num_panels):
+            depth = i / num_panels
+            
+            # Calculate panel position với perspective
+            panel_y_top = int(vanish_y - 115 + (H * 0.2 - vanish_y + 115) * depth)
+            panel_y_bot = int(vanish_y + 115 + (H - vanish_y - 115) * depth)
+            
+            if panel_y_bot >= H or panel_y_top < 0:
+                continue
+            
+            panel_h = panel_y_bot - panel_y_top
+            
+            # Left panels
+            panel_x_l = int(wall_left_near + (wall_left_far - wall_left_near) * (1 - depth))
+            panel_w_l = max(28, int(48 * (1 - depth * 0.65)))
+            
+            if panel_x_l > 15 and panel_x_l < W * 0.35:
+                self._draw_industrial_panel(screen, panel_x_l - panel_w_l, panel_y_top,
+                                            panel_w_l, panel_h, depth, t, i, True)
+            
+            # Right panels
+            panel_x_r = int(wall_right_near + (wall_right_far - wall_right_near) * (1 - depth))
+            panel_w_r = max(28, int(48 * (1 - depth * 0.65)))
+            
+            if panel_x_r < W - 15 and panel_x_r > W * 0.65:
+                self._draw_industrial_panel(screen, panel_x_r, panel_y_top,
+                                            panel_w_r, panel_h, depth, t, i, False)
+        
+        # ═══ VOLUMETRIC CEILING LIGHTS ═══
+        num_lights = 7
         for i in range(num_lights):
-            light_x = int(W * 0.25 + (W * 0.5 / (num_lights - 1)) * i) if num_lights > 1 else W // 2
-            light_y = horizon_y - 140
+            depth = i / num_lights
+            light_y = int(vanish_y - 165 + (20 - vanish_y + 165) * depth)
             
-            # Light fixture
-            fixture_w = 80
-            fixture_h = 20
-            fixture_rect = pygame.Rect(light_x - fixture_w // 2, light_y, fixture_w, fixture_h)
-            
-            pygame.draw.rect(screen, (75, 80, 90), fixture_rect)
-            pygame.draw.rect(screen, (95, 100, 110), fixture_rect, 2)
-            
-            # Light glow (multiple layers for depth)
-            for j in range(4):
-                glow_size = (90 + j * 30, 40 + j * 15)
-                alpha = 140 - j * 35
+            if light_y > -60 and light_y < H // 2:
+                light_scale = 1.0 - depth * 0.75
+                light_x = vanish_x
                 
-                glow_surf = pygame.Surface(glow_size, pygame.SRCALPHA)
-                pygame.draw.ellipse(glow_surf, (200, 220, 255, alpha), (0, 0, *glow_size))
+                fixture_w = int(95 * light_scale)
+                fixture_h = int(24 * light_scale)
                 
-                screen.blit(glow_surf, (light_x - glow_size[0] // 2, light_y + 10 - j * 5))
+                if fixture_w > 18:
+                    self._draw_volumetric_light(screen, light_x, light_y, 
+                                                fixture_w, fixture_h, depth, t, i)
         
-        # ═══ FLOOR GRID WITH PERSPECTIVE ═══
-        grid_start_y = horizon_y + 130
+        # ═══ HEXAGONAL FLOOR GRID ═══
+        grid_start_y = vanish_y + 145
+        hex_base_size = 48
         
-        # Horizontal lines
-        for i in range(10):
-            y = grid_start_y + i * 30
+        for row in range(9):
+            row_depth = row / 9
+            row_y = int(grid_start_y + row * 38 + row_depth * 25)
             
-            # Width decreases with distance
-            progress = i / 10
-            width_factor = 1 - progress * 0.6
-            line_width = int(W * 0.5 * width_factor)
+            if row_y <= H // 2 or row_y >= H:
+                continue
             
-            x_center = W // 2
-            line_color = (45 + i * 3, 45 + i * 3, 55 + i * 3)
+            scale = 1.0 - row_depth * 0.55
+            hex_size = int(hex_base_size * scale)
+            num_hex = int(6 + row * 0.9)
             
-            pygame.draw.line(screen, line_color,
-                           (x_center - line_width, y),
-                           (x_center + line_width, y), 2)
+            for col in range(-num_hex // 2, num_hex // 2 + 1):
+                hex_x = int(vanish_x + col * hex_size * 1.65 * scale)
+                
+                if -hex_size < hex_x < W + hex_size:
+                    self._draw_hex_tile(screen, hex_x, row_y, hex_size, row_depth, t, row, col)
         
-        # Vertical lines (perspective)
-        for i in range(-3, 4):
-            x_start = W // 2 + i * 100
-            
-            # Draw from horizon to bottom
-            for j in range(10):
-                y1 = grid_start_y + j * 30
-                y2 = y1 + 25
-                
-                # Converge to center
-                convergence = (10 - j) / 10
-                x_offset = i * 100 * convergence
-                
-                x1 = W // 2 + int(x_offset)
-                x2 = W // 2 + int(x_offset * 0.92)
-                
-                line_color = (45 + j * 2, 45 + j * 2, 55 + j * 2)
-                pygame.draw.line(screen, line_color, (x1, y1), (x2, y2), 1)
+        # ═══ ATMOSPHERIC FOG OVERLAY ═══
+        fog_surf = pygame.Surface((W, H // 3), pygame.SRCALPHA)
+        for y in range(H // 3):
+            alpha = int((y / (H // 3)) * 55)
+            pygame.draw.line(fog_surf, (12, 16, 24, alpha), (0, y), (W, y))
+        screen.blit(fog_surf, (0, 0))
         
-        # ═══ DISTANT DOORWAY (WHERE MONSTER STANDS) ═══
-        door_w = 240
-        door_h = 260
+        # ═══ INDUSTRIAL DOORWAY (Monster Portal) ═══
+        door_w = 250
+        door_h = 275
         door_x = (W - door_w) // 2
-        door_y = horizon_y - door_h // 2
+        door_y = vanish_y - door_h // 2
         
-        # Doorway frame (thick metal frame)
-        frame_thickness = 12
-        pygame.draw.rect(screen, (45, 50, 60), 
-                        (door_x - frame_thickness, door_y - frame_thickness, 
-                         door_w + frame_thickness * 2, door_h + frame_thickness * 2))
+        # Thick metal frame
+        frame_t = 14
+        frame_color = (40, 45, 54)
         
-        # Frame highlights
-        pygame.draw.rect(screen, (65, 70, 80),
-                        (door_x - frame_thickness, door_y - frame_thickness,
-                         door_w + frame_thickness * 2, door_h + frame_thickness * 2), 3)
+        frame_outer = pygame.Rect(door_x - frame_t, door_y - frame_t,
+                                  door_w + frame_t * 2, door_h + frame_t * 2)
+        pygame.draw.rect(screen, frame_color, frame_outer, border_radius=6)
+        pygame.draw.rect(screen, (60, 65, 74), frame_outer, 3, border_radius=6)
         
-        # Dark interior
-        pygame.draw.rect(screen, (10, 12, 18), (door_x, door_y, door_w, door_h))
+        # Frame inner edge highlight
+        frame_inner = frame_outer.inflate(-6, -6)
+        pygame.draw.rect(screen, (28, 33, 42), frame_inner, 2, border_radius=4)
         
-        # Doorway warning lights
-        for light_side, dx in [("left", -25), ("right", door_w + 15)]:
-            light_x = door_x + dx
-            light_y = door_y + 25
+        # Dark portal interior (gradient)
+        interior_surf = pygame.Surface((door_w, door_h), pygame.SRCALPHA)
+        for y in range(door_h):
+            darkness = int(6 + (y / door_h) * 8)
+            pygame.draw.line(interior_surf, (darkness, darkness + 1, darkness + 4), 
+                           (0, y), (door_w, y))
+        screen.blit(interior_surf, (door_x, door_y))
+        
+        # Blinking warning lights (red)
+        for side, offset_x in [("left", -30), ("right", door_w + 18)]:
+            light_x = door_x + offset_x
+            light_y = door_y + 30
             
-            # Blinking effect
-            blink_phase = (t // 400) % 2
-            if blink_phase:
-                light_color = (255, 50, 50)
+            blink = (t // 420 + (0 if side == "left" else 1)) % 2
+            
+            if blink:
+                light_color = (255, 42, 42)
                 
                 # Light housing
-                pygame.draw.circle(screen, (80, 30, 30), (light_x, light_y), 12)
-                pygame.draw.circle(screen, light_color, (light_x, light_y), 9)
+                pygame.draw.circle(screen, (78, 26, 26), (light_x, light_y), 13)
+                pygame.draw.circle(screen, light_color, (light_x, light_y), 10)
+                pygame.draw.circle(screen, (255, 95, 95), (light_x - 2, light_y - 2), 5)
                 
-                # Glow
-                for j in range(3):
-                    glow_size = 25 + j * 12
-                    alpha = 120 - j * 40
+                # Volumetric glow layers
+                for j in range(5):
+                    glow_r = 28 + j * 15
+                    alpha = 125 - j * 30
                     
-                    glow_surf = pygame.Surface((glow_size * 2, glow_size * 2), pygame.SRCALPHA)
-                    pygame.draw.circle(glow_surf, (*light_color, alpha), (glow_size, glow_size), glow_size)
-                    screen.blit(glow_surf, (light_x - glow_size, light_y - glow_size))
+                    glow_surf = pygame.Surface((glow_r * 2, glow_r * 2), pygame.SRCALPHA)
+                    pygame.draw.circle(glow_surf, (*light_color, alpha), 
+                                     (glow_r, glow_r), glow_r)
+                    screen.blit(glow_surf, (light_x - glow_r, light_y - glow_r))
             else:
-                pygame.draw.circle(screen, (80, 30, 30), (light_x, light_y), 12)
-                pygame.draw.circle(screen, (100, 20, 20), (light_x, light_y), 9)
+                pygame.draw.circle(screen, (78, 26, 26), (light_x, light_y), 13)
+                pygame.draw.circle(screen, (95, 16, 16), (light_x, light_y), 10)
         
-        # Hazard stripes on doorway
-        stripe_w = 30
-        for i in range(0, door_w, stripe_w * 2):
-            # Top stripe
-            pygame.draw.rect(screen, (200, 200, 0), (door_x + i, door_y - 8, stripe_w, 8))
-            # Bottom stripe
-            pygame.draw.rect(screen, (200, 200, 0), (door_x + i, door_y + door_h, stripe_w, 8))
+        # Animated hazard stripes
+        stripe_w = 32
+        stripe_offset = (t // 95) % (stripe_w * 2)
+        
+        for stripe_y_pos in [door_y - 11, door_y + door_h + 3]:
+            num_stripes = (door_w // stripe_w) + 3
+            
+            for i in range(-1, num_stripes):
+                stripe_x = door_x + i * stripe_w * 2 - stripe_offset
+                
+                if door_x - frame_t <= stripe_x + stripe_w and stripe_x < door_x + door_w + frame_t:
+                    # Yellow stripe
+                    pygame.draw.rect(screen, (215, 195, 0), 
+                                   (stripe_x, stripe_y_pos, stripe_w, 8))
+                    # Black stripe
+                    pygame.draw.rect(screen, (38, 38, 48), 
+                                   (stripe_x + stripe_w, stripe_y_pos, stripe_w, 8))
+        
+        # Blinking warning text
+        if (t // 750) % 2 == 0:
+            warning = self.tiny_font.render("⚠ DANGER ZONE ⚠", True, (255, 195, 0))
+            screen.blit(warning, warning.get_rect(center=(door_x + door_w // 2, door_y - 28)))
+    
+    def _draw_industrial_panel(self, screen, x, y, w, h, depth, time_ms, index, is_left):
+        """Vẽ wall panel với industrial details"""
+        if h < 12 or w < 12:
+            return
+        
+        panel_rect = pygame.Rect(int(x), int(y), int(w), int(h))
+        
+        # Panel base color với depth darkening
+        dark_factor = 1.0 - depth * 0.35
+        base_r = int(58 * dark_factor)
+        base_g = int(64 * dark_factor)
+        base_b = int(74 * dark_factor)
+        
+        # Panel body
+        pygame.draw.rect(screen, (base_r, base_g, base_b), panel_rect)
+        pygame.draw.rect(screen, (40, 46, 56), panel_rect, 
+                        max(1, int(3 * (1 - depth * 0.5))))
+        
+        # Panel segments (horizontal divisions)
+        if h > 45:
+            num_seg = max(2, int(3 * (1 - depth * 0.45)))
+            seg_h = h // num_seg
+            
+            for seg_i in range(num_seg):
+                seg_y = int(y + 10 + seg_i * seg_h)
+                seg_height = max(6, int(seg_h - 15))
+                
+                if seg_height > 0:
+                    seg_rect = pygame.Rect(int(x + 6), seg_y, 
+                                          max(1, int(w - 12)), seg_height)
+                    pygame.draw.rect(screen, (base_r + 12, base_g + 12, base_b + 12), seg_rect)
+                    pygame.draw.rect(screen, (base_r - 10, base_g - 10, base_b - 10), seg_rect, 1)
+        
+        # Rivets (bolts)
+        if w > 22 and h > 38:
+            rivet_positions = [
+                (x + w * 0.18, y + h * 0.18),
+                (x + w * 0.82, y + h * 0.18),
+                (x + w * 0.18, y + h * 0.82),
+                (x + w * 0.82, y + h * 0.82)
+            ]
+            
+            rivet_r = max(2, int(5 * (1 - depth * 0.65)))
+            for rx, ry in rivet_positions:
+                # Rivet head
+                pygame.draw.circle(screen, (82, 88, 98), (int(rx), int(ry)), rivet_r)
+                # Rivet center
+                pygame.draw.circle(screen, (36, 42, 52), (int(rx), int(ry)), 
+                                 max(1, rivet_r - 2))
+        
+        # Blinking indicator light
+        if h > 32:
+            light_phase = (time_ms // 580 + index) % 4
+            
+            if light_phase == 0:
+                light_color = (0, 255, 135)
+                light_y = int(y + h * 0.14)
+                light_x = int(x + w // 2)
+                light_w = max(4, int(19 * (1 - depth * 0.55)))
+                light_h = max(3, int(10 * (1 - depth * 0.55)))
+                
+                # Light bar
+                pygame.draw.rect(screen, light_color, 
+                               (light_x - light_w // 2, light_y, light_w, light_h))
+                
+                # Light glow
+                if light_w > 6:
+                    glow_surf = pygame.Surface((light_w * 2, light_h * 2), pygame.SRCALPHA)
+                    pygame.draw.rect(glow_surf, (*light_color, 110), 
+                                   (light_w // 2, light_h // 2, light_w, light_h))
+                    screen.blit(glow_surf, (light_x - light_w, light_y - light_h // 2))
+    
+    def _draw_volumetric_light(self, screen, x, y, w, h, depth, time_ms, index):
+        """Vẽ ceiling light với volumetric glow"""
+        fixture_rect = pygame.Rect(int(x - w // 2), int(y), int(w), int(h))
+        
+        # Light fixture body
+        darkness = 1.0 - depth * 0.45
+        fixture_color = (int(68 * darkness), int(74 * darkness), int(84 * darkness))
+        fixture_edge = (int(88 * darkness), int(94 * darkness), int(104 * darkness))
+        
+        pygame.draw.rect(screen, fixture_color, fixture_rect)
+        pygame.draw.rect(screen, fixture_edge, fixture_rect, 
+                        max(1, int(2 * (1 - depth * 0.5))))
+        
+        # Volumetric light cone (multiple layers for depth)
+        num_layers = max(4, int(6 * (1 - depth * 0.5)))
+        
+        for layer in range(num_layers):
+            glow_w = int(w * 0.85 + layer * (38 * (1 - depth * 0.35)))
+            glow_h = int(h + layer * (20 * (1 - depth * 0.35)))
+            alpha = int((150 - layer * 30) * (1 - depth * 0.35))
+            
+            if alpha > 0:
+                glow_surf = pygame.Surface((glow_w, glow_h), pygame.SRCALPHA)
+                pygame.draw.ellipse(glow_surf, (195, 215, 255, alpha), 
+                                  (0, 0, glow_w, glow_h))
+                screen.blit(glow_surf, (int(x - glow_w // 2), int(y + h - 6)))
+    
+    def _draw_hex_tile(self, screen, cx, cy, size, depth, time_ms, row, col):
+        """Vẽ hexagonal floor tile"""
+        if size < 6:
+            return
+        
+        # Hexagon points
+        points = []
+        for i in range(6):
+            angle = math.radians(60 * i + 30)
+            px = cx + int(math.cos(angle) * size)
+            py = cy + int(math.sin(angle) * size)
+            points.append((px, py))
+        
+        # Tile color với depth darkening
+        darkness = 1.0 - depth * 0.52
+        tile_r = int(35 * darkness)
+        tile_g = int(39 * darkness)
+        tile_b = int(49 * darkness)
+        
+        # Subtle pattern variation
+        pattern = (row + col) % 3
+        if pattern == 1:
+            tile_r += 4
+            tile_g += 4
+        elif pattern == 2:
+            tile_b += 5
+        
+        # Draw hexagon
+        pygame.draw.polygon(screen, (tile_r, tile_g, tile_b), points)
+        pygame.draw.polygon(screen, (tile_r + 10, tile_g + 10, tile_b + 14), points, 
+                          max(1, int(2 * (1 - depth * 0.45))))
+        
+        # Inner detail line
+        if size > 14:
+            inner_points = []
+            for i in range(6):
+                angle = math.radians(60 * i + 30)
+                px = cx + int(math.cos(angle) * size * 0.68)
+                py = cy + int(math.sin(angle) * size * 0.68)
+                inner_points.append((px, py))
+            
+            pygame.draw.polygon(screen, (tile_r + 6, tile_g + 6, tile_b + 10), 
+                              inner_points, 1)
 
     # ══════════════════════════════════════════════════════════
-    #   ENHANCED DOOM GUN - REALISTIC HANDS & WEAPON
+    #   ★★★ ULTRA REALISTIC FIRST-PERSON GUN ★★★
+    #   Detailed hands + weapon như DOOM classic
     # ══════════════════════════════════════════════════════════
     def draw_gun_doom(self, screen, show_flash=False):
-        """Vẽ súng DOOM-style với tay cầm chi tiết và realistic"""
+        """Vẽ súng first-person với tay cầm chi tiết siêu đẹp"""
         W, H = self.width, self.height
         t = pygame.time.get_ticks()
         
@@ -340,320 +480,318 @@ class UI:
             self._muzzle_flash_timer -= 1/60.0
             show_flash = True
         
-        # Recoil animation (smooth decay)
+        # Smooth recoil decay
         self._gun_recoil = max(0, self._gun_recoil - 0.08)
         self._gun_kickback = max(0, self._gun_kickback - 2.0)
         
         # Gun base position
         gun_base_x = W // 2
-        gun_base_y = H - 60 + self._gun_kickback
+        gun_base_y = H - 58 + int(self._gun_kickback)
         
         # Recoil offset
-        recoil_y = -self._gun_recoil * 40
-        recoil_x_sway = math.sin(self._gun_recoil * 3) * 5  # Slight horizontal sway
+        recoil_y = int(-self._gun_recoil * 42)
+        recoil_sway = math.sin(self._gun_recoil * 3.2) * 6
         
-        # ═══ LEFT HAND (SUPPORTING HAND) ═══
-        left_hand_x = gun_base_x - 130 + recoil_x_sway
-        left_hand_y = gun_base_y - 70 + recoil_y
+        # ═══ LEFT HAND (Supporting hand) ═══
+        lh_x = gun_base_x - 135 + int(recoil_sway)
+        lh_y = gun_base_y - 72 + recoil_y
         
         # Left forearm
-        left_arm_points = [
-            (left_hand_x - 50, H),
-            (left_hand_x - 38, H),
-            (left_hand_x + 15, left_hand_y + 50),
-            (left_hand_x + 3, left_hand_y + 50)
+        lf_points = [
+            (lh_x - 52, H),
+            (lh_x - 39, H),
+            (lh_x + 16, lh_y + 52),
+            (lh_x + 2, lh_y + 52)
         ]
+        pygame.draw.polygon(screen, (132, 112, 92), lf_points)
+        pygame.draw.polygon(screen, (88, 72, 58), lf_points, 4)
         
-        # Arm gradient (darker on edges)
-        pygame.draw.polygon(screen, (130, 110, 90), left_arm_points)
-        pygame.draw.polygon(screen, (90, 75, 60), left_arm_points, 4)
-        
-        # Arm shading
+        # Arm muscle shading
         shade_points = [
-            (left_hand_x - 45, H),
-            (left_hand_x - 40, H),
-            (left_hand_x + 5, left_hand_y + 50),
-            (left_hand_x + 3, left_hand_y + 50)
+            (lh_x - 46, H),
+            (lh_x - 41, H),
+            (lh_x + 6, lh_y + 52),
+            (lh_x + 3, lh_y + 52)
         ]
-        pygame.draw.polygon(screen, (100, 85, 70), shade_points)
+        pygame.draw.polygon(screen, (102, 87, 72), shade_points)
         
         # Left palm
-        palm_rect = pygame.Rect(left_hand_x - 18, left_hand_y + 30, 50, 40)
-        pygame.draw.ellipse(screen, (155, 135, 115), palm_rect)
-        pygame.draw.ellipse(screen, (115, 95, 80), palm_rect, 3)
+        palm_rect = pygame.Rect(lh_x - 20, lh_y + 31, 52, 42)
+        pygame.draw.ellipse(screen, (158, 138, 118), palm_rect)
+        pygame.draw.ellipse(screen, (118, 98, 82), palm_rect, 3)
         
-        # Palm shading
-        shade_rect = palm_rect.inflate(-10, -10)
-        pygame.draw.ellipse(screen, (135, 115, 95), shade_rect)
+        # Palm detail (lighter center)
+        detail_rect = palm_rect.inflate(-11, -11)
+        pygame.draw.ellipse(screen, (138, 118, 98), detail_rect)
         
         # Left fingers (gripping foregrip)
-        finger_data = [
-            (left_hand_x - 12, left_hand_y + 32, 9, 28, -8),   # Thumb
-            (left_hand_x + 0, left_hand_y + 28, 8, 32, 0),      # Index
-            (left_hand_x + 12, left_hand_y + 30, 8, 30, 3),     # Middle
-            (left_hand_x + 23, left_hand_y + 33, 7, 26, 5)      # Ring
+        fingers_left = [
+            (lh_x - 13, lh_y + 33, 10, 30, -9),   # Thumb
+            (lh_x + 1, lh_y + 29, 9, 34, 0),      # Index
+            (lh_x + 13, lh_y + 31, 9, 32, 3),     # Middle
+            (lh_x + 25, lh_y + 34, 8, 28, 6)      # Ring
         ]
         
-        for fx, fy, fw, fh, angle in finger_data:
-            # Finger base
-            finger_surf = pygame.Surface((fw, fh), pygame.SRCALPHA)
-            pygame.draw.rect(finger_surf, (145, 125, 105), (0, 0, fw, fh), border_radius=3)
-            pygame.draw.rect(finger_surf, (105, 85, 70), (0, 0, fw, fh), 2, border_radius=3)
+        for fx, fy, fw, fh, angle in fingers_left:
+            # Finger surface
+            f_surf = pygame.Surface((fw, fh), pygame.SRCALPHA)
+            pygame.draw.rect(f_surf, (148, 128, 108), (0, 0, fw, fh), border_radius=3)
+            pygame.draw.rect(f_surf, (108, 88, 72), (0, 0, fw, fh), 2, border_radius=3)
             
             # Knuckle lines
-            for knuckle_y in [fh // 3, fh * 2 // 3]:
-                pygame.draw.line(finger_surf, (115, 95, 80), (2, knuckle_y), (fw - 2, knuckle_y), 1)
+            for knuckle in [fh // 3, fh * 2 // 3]:
+                pygame.draw.line(f_surf, (118, 98, 82), (2, knuckle), (fw - 2, knuckle), 1)
             
-            # Rotate and blit
+            # Rotate and draw
             if angle != 0:
-                finger_surf = pygame.transform.rotate(finger_surf, angle)
-            
-            screen.blit(finger_surf, (fx, fy))
+                f_surf = pygame.transform.rotate(f_surf, angle)
+            screen.blit(f_surf, (fx, fy))
         
-        # ═══ RIGHT HAND (TRIGGER HAND) ═══
-        right_hand_x = gun_base_x + 60 - recoil_x_sway
-        right_hand_y = gun_base_y - 50 + recoil_y
+        # ═══ RIGHT HAND (Trigger hand) ═══
+        rh_x = gun_base_x + 62 - int(recoil_sway)
+        rh_y = gun_base_y - 52 + recoil_y
         
         # Right forearm
-        right_arm_points = [
-            (right_hand_x + 50, H),
-            (right_hand_x + 62, H),
-            (right_hand_x + 25, right_hand_y + 60),
-            (right_hand_x + 13, right_hand_y + 60)
+        rf_points = [
+            (rh_x + 52, H),
+            (rh_x + 64, H),
+            (rh_x + 26, rh_y + 62),
+            (rh_x + 14, rh_y + 62)
         ]
-        
-        pygame.draw.polygon(screen, (130, 110, 90), right_arm_points)
-        pygame.draw.polygon(screen, (90, 75, 60), right_arm_points, 4)
+        pygame.draw.polygon(screen, (132, 112, 92), rf_points)
+        pygame.draw.polygon(screen, (88, 72, 58), rf_points, 4)
         
         # Arm shading
-        shade_points = [
-            (right_hand_x + 55, H),
-            (right_hand_x + 60, H),
-            (right_hand_x + 23, right_hand_y + 60),
-            (right_hand_x + 20, right_hand_y + 60)
+        shade_r = [
+            (rh_x + 57, H),
+            (rh_x + 62, H),
+            (rh_x + 24, rh_y + 62),
+            (rh_x + 21, rh_y + 62)
         ]
-        pygame.draw.polygon(screen, (100, 85, 70), shade_points)
+        pygame.draw.polygon(screen, (102, 87, 72), shade_r)
         
         # Right palm
-        palm_rect = pygame.Rect(right_hand_x - 12, right_hand_y + 42, 48, 38)
-        pygame.draw.ellipse(screen, (155, 135, 115), palm_rect)
-        pygame.draw.ellipse(screen, (115, 95, 80), palm_rect, 3)
+        palm_r = pygame.Rect(rh_x - 13, rh_y + 43, 50, 40)
+        pygame.draw.ellipse(screen, (158, 138, 118), palm_r)
+        pygame.draw.ellipse(screen, (118, 98, 82), palm_r, 3)
         
-        shade_rect = palm_rect.inflate(-8, -8)
-        pygame.draw.ellipse(screen, (135, 115, 95), shade_rect)
+        detail_r = palm_r.inflate(-9, -9)
+        pygame.draw.ellipse(screen, (138, 118, 98), detail_r)
         
-        # Right fingers (wrapped around grip)
-        # Thumb
-        thumb_rect = pygame.Rect(right_hand_x + 25, right_hand_y + 35, 10, 30)
-        pygame.draw.rect(screen, (145, 125, 105), thumb_rect, border_radius=4)
-        pygame.draw.rect(screen, (105, 85, 70), thumb_rect, 2, border_radius=4)
-        pygame.draw.line(screen, (115, 95, 80), (thumb_rect.left + 3, thumb_rect.centery), 
-                        (thumb_rect.right - 3, thumb_rect.centery), 1)
+        # Right thumb
+        thumb_r = pygame.Rect(rh_x + 26, rh_y + 36, 11, 32)
+        pygame.draw.rect(screen, (148, 128, 108), thumb_r, border_radius=4)
+        pygame.draw.rect(screen, (108, 88, 72), thumb_r, 2, border_radius=4)
+        pygame.draw.line(screen, (118, 98, 82), 
+                        (thumb_r.left + 3, thumb_r.centery), 
+                        (thumb_r.right - 3, thumb_r.centery), 1)
         
-        # Fingers wrapped around grip
+        # Grip fingers
         grip_fingers = [
-            (right_hand_x - 8, right_hand_y + 40, 8, 28),
-            (right_hand_x + 2, right_hand_y + 38, 8, 30),
-            (right_hand_x + 12, right_hand_y + 40, 7, 27)
+            (rh_x - 9, rh_y + 41, 9, 30),
+            (rh_x + 2, rh_y + 39, 9, 32),
+            (rh_x + 13, rh_y + 41, 8, 29)
         ]
         
-        for gfx, gfy, gfw, gfh in grip_fingers:
-            pygame.draw.rect(screen, (145, 125, 105), (gfx, gfy, gfw, gfh), border_radius=3)
-            pygame.draw.rect(screen, (105, 85, 70), (gfx, gfy, gfw, gfh), 2, border_radius=3)
+        for gx, gy, gw, gh in grip_fingers:
+            pygame.draw.rect(screen, (148, 128, 108), (gx, gy, gw, gh), border_radius=3)
+            pygame.draw.rect(screen, (108, 88, 72), (gx, gy, gw, gh), 2, border_radius=3)
             
             # Knuckles
-            for knuckle_y in [gfy + gfh // 3, gfy + gfh * 2 // 3]:
-                pygame.draw.line(screen, (115, 95, 80), (gfx + 2, knuckle_y), (gfx + gfw - 2, knuckle_y), 1)
+            for k_y in [gy + gh // 3, gy + gh * 2 // 3]:
+                pygame.draw.line(screen, (118, 98, 82), (gx + 2, k_y), (gx + gw - 2, k_y), 1)
         
         # Trigger finger
-        trigger_y_base = right_hand_y + 25
-        trigger_extend = 5 if self._gun_recoil > 0.4 else 0
+        trigger_base_y = rh_y + 26
+        trigger_ext = 6 if self._gun_recoil > 0.4 else 0
         
-        trigger_finger_rect = pygame.Rect(right_hand_x + 35, trigger_y_base + trigger_extend, 9, 24)
-        pygame.draw.rect(screen, (145, 125, 105), trigger_finger_rect, border_radius=4)
-        pygame.draw.rect(screen, (105, 85, 70), trigger_finger_rect, 2, border_radius=4)
+        tf_rect = pygame.Rect(rh_x + 37, trigger_base_y + trigger_ext, 10, 26)
+        pygame.draw.rect(screen, (148, 128, 108), tf_rect, border_radius=4)
+        pygame.draw.rect(screen, (108, 88, 72), tf_rect, 2, border_radius=4)
+        pygame.draw.line(screen, (118, 98, 82), 
+                        (tf_rect.left + 2, tf_rect.top + 13),
+                        (tf_rect.right - 2, tf_rect.top + 13), 1)
         
-        # Finger joint
-        pygame.draw.line(screen, (115, 95, 80), 
-                        (trigger_finger_rect.left + 2, trigger_finger_rect.top + 12),
-                        (trigger_finger_rect.right - 2, trigger_finger_rect.top + 12), 1)
+        # ═══ DOUBLE BARREL SHOTGUN ═══
+        gun_y = gun_base_y - 112 + recoil_y
+        gun_x = gun_base_x + int(recoil_sway)
         
-        # ═══ GUN WEAPON (SHOTGUN STYLE) ═══
-        gun_y = gun_base_y - 110 + recoil_y
-        gun_x = gun_base_x + recoil_x_sway
-        
-        # === DOUBLE BARREL ===
-        barrel_length = 200
-        barrel_spacing = 4
+        # === BARRELS ===
+        barrel_len = 205
+        barrel_gap = 5
         
         # Upper barrel
-        upper_barrel = pygame.Rect(gun_x - 18, gun_y - 26, barrel_length, 17)
-        pygame.draw.rect(screen, (55, 60, 70), upper_barrel, border_radius=3)
-        pygame.draw.rect(screen, (75, 80, 90), upper_barrel, 3, border_radius=3)
+        ub_rect = pygame.Rect(gun_x - 19, gun_y - 27, barrel_len, 18)
+        pygame.draw.rect(screen, (53, 58, 68), ub_rect, border_radius=3)
+        pygame.draw.rect(screen, (73, 78, 88), ub_rect, 3, border_radius=3)
         
         # Barrel highlight
-        pygame.draw.rect(screen, (85, 90, 100), (upper_barrel.x + 5, upper_barrel.y + 3, barrel_length - 10, 5))
+        pygame.draw.rect(screen, (83, 88, 98), 
+                        (ub_rect.x + 6, ub_rect.y + 4, barrel_len - 12, 6))
         
         # Lower barrel
-        lower_barrel = pygame.Rect(gun_x - 18, gun_y - 26 + 17 + barrel_spacing, barrel_length, 17)
-        pygame.draw.rect(screen, (55, 60, 70), lower_barrel, border_radius=3)
-        pygame.draw.rect(screen, (75, 80, 90), lower_barrel, 3, border_radius=3)
+        lb_rect = pygame.Rect(gun_x - 19, gun_y - 27 + 18 + barrel_gap, barrel_len, 18)
+        pygame.draw.rect(screen, (53, 58, 68), lb_rect, border_radius=3)
+        pygame.draw.rect(screen, (73, 78, 88), lb_rect, 3, border_radius=3)
         
-        pygame.draw.rect(screen, (85, 90, 100), (lower_barrel.x + 5, lower_barrel.y + 3, barrel_length - 10, 5))
+        pygame.draw.rect(screen, (83, 88, 98), 
+                        (lb_rect.x + 6, lb_rect.y + 4, barrel_len - 12, 6))
         
-        # Barrel bands
-        for band_x in [gun_x + 45, gun_x + 95, gun_x + 150]:
-            band_rect = pygame.Rect(band_x, gun_y - 30, 10, 46)
-            pygame.draw.rect(screen, (45, 50, 60), band_rect)
-            pygame.draw.rect(screen, (65, 70, 80), band_rect, 2)
+        # Barrel bands (metal rings)
+        for band_x in [gun_x + 48, gun_x + 100, gun_x + 155]:
+            band_rect = pygame.Rect(band_x, gun_y - 31, 11, 48)
+            pygame.draw.rect(screen, (43, 48, 58), band_rect)
+            pygame.draw.rect(screen, (63, 68, 78), band_rect, 2)
         
-        # === RECEIVER/ACTION ===
-        receiver_x = gun_x - 40
-        receiver_y = gun_y - 18
-        receiver_w = 75
-        receiver_h = 44
+        # === RECEIVER ===
+        rec_x = gun_x - 42
+        rec_y = gun_y - 19
+        rec_w = 78
+        rec_h = 46
         
-        receiver_rect = pygame.Rect(receiver_x, receiver_y, receiver_w, receiver_h)
-        pygame.draw.rect(screen, (65, 70, 80), receiver_rect, border_radius=6)
-        pygame.draw.rect(screen, (85, 90, 100), receiver_rect, 3, border_radius=6)
+        rec_rect = pygame.Rect(rec_x, rec_y, rec_w, rec_h)
+        pygame.draw.rect(screen, (63, 68, 78), rec_rect, border_radius=6)
+        pygame.draw.rect(screen, (83, 88, 98), rec_rect, 3, border_radius=6)
         
         # Receiver details
-        detail_rect = pygame.Rect(receiver_x + 8, receiver_y + 8, receiver_w - 16, receiver_h - 16)
-        pygame.draw.rect(screen, (75, 80, 90), detail_rect, border_radius=4)
-        pygame.draw.rect(screen, (55, 60, 70), detail_rect, 2, border_radius=4)
+        detail_r = pygame.Rect(rec_x + 9, rec_y + 9, rec_w - 18, rec_h - 18)
+        pygame.draw.rect(screen, (73, 78, 88), detail_r, border_radius=4)
+        pygame.draw.rect(screen, (53, 58, 68), detail_r, 2, border_radius=4)
         
         # Ejection port
-        port_rect = pygame.Rect(receiver_x + 15, receiver_y + 5, 25, 12)
-        pygame.draw.rect(screen, (30, 35, 45), port_rect, border_radius=3)
-        pygame.draw.rect(screen, (50, 55, 65), port_rect, 1, border_radius=3)
+        port = pygame.Rect(rec_x + 16, rec_y + 6, 27, 13)
+        pygame.draw.rect(screen, (28, 33, 43), port, border_radius=3)
+        pygame.draw.rect(screen, (48, 53, 63), port, 1, border_radius=3)
         
-        # === PUMP ACTION (FOREGRIP) ===
-        pump_offset = int(self._gun_recoil * 25)
-        pump_x = gun_x - 25 - pump_offset
-        pump_y = gun_y - 8
-        pump_w = 40
-        pump_h = 24
+        # === PUMP FOREGRIP ===
+        pump_push = int(self._gun_recoil * 28)
+        pump_x = gun_x - 28 - pump_push
+        pump_y = gun_y - 9
+        pump_w = 43
+        pump_h = 26
         
         pump_rect = pygame.Rect(pump_x, pump_y, pump_w, pump_h)
-        pygame.draw.rect(screen, (75, 80, 90), pump_rect, border_radius=5)
-        pygame.draw.rect(screen, (55, 60, 70), pump_rect, 3, border_radius=5)
+        pygame.draw.rect(screen, (73, 78, 88), pump_rect, border_radius=5)
+        pygame.draw.rect(screen, (53, 58, 68), pump_rect, 3, border_radius=5)
         
         # Pump grooves
-        for groove_i in range(5):
-            groove_x = pump_x + 5 + groove_i * 7
-            pygame.draw.line(screen, (55, 60, 70), (groove_x, pump_y + 5), (groove_x, pump_y + pump_h - 5), 2)
+        for g_i in range(6):
+            groove_x = pump_x + 6 + g_i * 6
+            pygame.draw.line(screen, (53, 58, 68), 
+                           (groove_x, pump_y + 6), 
+                           (groove_x, pump_y + pump_h - 6), 2)
         
         # === TRIGGER ASSEMBLY ===
         # Trigger guard
-        guard_x = gun_x + 25
-        guard_y = gun_y + 8
+        guard_x = gun_x + 27
+        guard_y = gun_y + 9
         
-        pygame.draw.arc(screen, (65, 70, 80), 
-                       (guard_x, guard_y, 35, 32), 
+        pygame.draw.arc(screen, (63, 68, 78), 
+                       (guard_x, guard_y, 37, 34), 
                        0, math.pi, 5)
         
         # Trigger
-        trigger_pull = 6 if self._gun_recoil > 0.4 else 0
-        trigger_rect = pygame.Rect(guard_x + 13, guard_y + 18 + trigger_pull, 7, 14)
-        pygame.draw.rect(screen, (160, 140, 120), trigger_rect, border_radius=3)
-        pygame.draw.rect(screen, (120, 100, 80), trigger_rect, 2, border_radius=3)
+        trigger_pull = 7 if self._gun_recoil > 0.4 else 0
+        trigger_rect = pygame.Rect(guard_x + 14, guard_y + 19 + trigger_pull, 8, 15)
+        pygame.draw.rect(screen, (165, 145, 125), trigger_rect, border_radius=3)
+        pygame.draw.rect(screen, (125, 105, 85), trigger_rect, 2, border_radius=3)
         
-        # === STOCK ===
+        # === WOODEN STOCK ===
         stock_points = [
-            (gun_x + 70, gun_y - 5),
-            (gun_x + 165, gun_y - 10),
-            (gun_x + 165, gun_y + 30),
-            (gun_x + 70, gun_y + 25)
+            (gun_x + 72, gun_y - 6),
+            (gun_x + 170, gun_y - 11),
+            (gun_x + 170, gun_y + 32),
+            (gun_x + 72, gun_y + 27)
         ]
         
-        # Stock body (wood texture)
-        pygame.draw.polygon(screen, (90, 70, 50), stock_points)
-        pygame.draw.polygon(screen, (70, 55, 40), stock_points, 4)
+        # Wood body
+        pygame.draw.polygon(screen, (92, 72, 52), stock_points)
+        pygame.draw.polygon(screen, (72, 57, 42), stock_points, 4)
         
-        # Wood grain
-        for grain_i in range(4):
-            grain_start_x = gun_x + 75 + grain_i * 22
-            grain_end_x = gun_x + 155 + grain_i * 3
-            grain_y = gun_y + 5 + grain_i * 5
+        # Wood grain texture
+        for grain_i in range(5):
+            grain_sx = gun_x + 77 + grain_i * 20
+            grain_ex = gun_x + 160 + grain_i * 2
+            grain_y = gun_y + 6 + grain_i * 5
             
-            pygame.draw.line(screen, (80, 60, 45), 
-                           (grain_start_x, grain_y), 
-                           (grain_end_x, grain_y + 8), 2)
+            pygame.draw.line(screen, (82, 62, 47), 
+                           (grain_sx, grain_y), 
+                           (grain_ex, grain_y + 9), 2)
         
         # Stock buttplate
-        buttplate_rect = pygame.Rect(gun_x + 155, gun_y - 12, 15, 44)
-        pygame.draw.rect(screen, (60, 50, 40), buttplate_rect, border_radius=3)
-        pygame.draw.rect(screen, (90, 75, 60), buttplate_rect, 2, border_radius=3)
+        buttplate = pygame.Rect(gun_x + 160, gun_y - 13, 16, 46)
+        pygame.draw.rect(screen, (62, 52, 42), buttplate, border_radius=3)
+        pygame.draw.rect(screen, (92, 77, 62), buttplate, 2, border_radius=3)
         
-        # === MUZZLE FLASH ===
+        # === MUZZLE FLASH & EFFECTS ===
         if show_flash and self._muzzle_flash_timer > 0:
-            flash_x = gun_x - 18 - 50
-            flash_y = gun_y - 8
+            flash_x = gun_x - 19 - 55
+            flash_y = gun_y - 9
             
             flash_intensity = self._muzzle_flash_timer / 0.15
             
-            # Large expanding flash
-            for radius in range(70, 15, -12):
-                alpha = int(flash_intensity * 255 * (radius / 70))
-                flash_color = (255, 240, 120) if radius > 40 else (255, 200, 80)
+            # Large expanding flash core
+            for radius in range(75, 18, -13):
+                alpha = int(flash_intensity * 255 * (radius / 75))
+                flash_color = (255, 238, 125) if radius > 42 else (255, 198, 85)
                 
                 flash_surf = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
                 pygame.draw.circle(flash_surf, (*flash_color, alpha), (radius, radius), radius)
                 screen.blit(flash_surf, (flash_x - radius, flash_y - radius))
             
-            # Flash rays (random)
-            num_rays = 16
+            # Flash rays (star burst)
+            num_rays = 18
             for ray_i in range(num_rays):
-                angle = (ray_i / num_rays) * 2 * math.pi + random.uniform(-0.2, 0.2)
-                length = random.randint(50, 95)
-                width = random.randint(3, 7)
+                angle = (ray_i / num_rays) * 2 * math.pi + random.uniform(-0.18, 0.18)
+                length = random.randint(55, 100)
+                width = random.randint(4, 8)
                 
-                end_x = flash_x + math.cos(angle) * length
-                end_y = flash_y + math.sin(angle) * length
-                
-                ray_alpha = int(flash_intensity * 220)
-                ray_surf = pygame.Surface((5, length), pygame.SRCALPHA)
-                pygame.draw.line(ray_surf, (255, 240, 150, ray_alpha), (2, 0), (2, length), width)
+                ray_alpha = int(flash_intensity * 230)
+                ray_surf = pygame.Surface((6, length), pygame.SRCALPHA)
+                pygame.draw.line(ray_surf, (255, 238, 155, ray_alpha), (3, 0), (3, length), width)
                 
                 ray_surf = pygame.transform.rotate(ray_surf, -math.degrees(angle) - 90)
-                screen.blit(ray_surf, (flash_x - ray_surf.get_width() // 2, flash_y - ray_surf.get_height() // 2))
+                screen.blit(ray_surf, (flash_x - ray_surf.get_width() // 2, 
+                                      flash_y - ray_surf.get_height() // 2))
             
             # Bright core
-            core_size = int(18 * flash_intensity)
-            pygame.draw.circle(screen, (255, 255, 230), (flash_x, flash_y), core_size)
-            pygame.draw.circle(screen, (255, 240, 150), (flash_x, flash_y), core_size - 5)
+            core_size = int(20 * flash_intensity)
+            pygame.draw.circle(screen, (255, 255, 235), (flash_x, flash_y), core_size)
+            pygame.draw.circle(screen, (255, 238, 155), (flash_x, flash_y), core_size - 6)
             
-            # Smoke puffs (if late in flash)
-            if self._muzzle_flash_timer < 0.08:
-                for puff_i in range(3):
-                    puff_offset = puff_i * 15 + random.randint(-5, 5)
-                    puff_x = flash_x - 70 - puff_offset
-                    puff_y = flash_y + random.randint(-10, 10)
-                    puff_size = 15 + puff_i * 8
+            # Smoke puffs
+            if self._muzzle_flash_timer < 0.09:
+                for puff_i in range(4):
+                    puff_offset = puff_i * 16 + random.randint(-6, 6)
+                    puff_x = flash_x - 75 - puff_offset
+                    puff_y = flash_y + random.randint(-12, 12)
+                    puff_size = 17 + puff_i * 9
                     
-                    puff_alpha = int((0.08 - self._muzzle_flash_timer) / 0.08 * 80)
+                    puff_alpha = int((0.09 - self._muzzle_flash_timer) / 0.09 * 85)
                     puff_surf = pygame.Surface((puff_size * 2, puff_size * 2), pygame.SRCALPHA)
-                    pygame.draw.circle(puff_surf, (100, 100, 100, puff_alpha), (puff_size, puff_size), puff_size)
+                    pygame.draw.circle(puff_surf, (95, 95, 95, puff_alpha), 
+                                     (puff_size, puff_size), puff_size)
                     screen.blit(puff_surf, (puff_x - puff_size, puff_y - puff_size))
         
-        # === AMMO COUNTER (HUD STYLE) ===
-        ammo_bg_rect = pygame.Rect(W - 220, H - 75, 200, 60)
-        pygame.draw.rect(screen, (20, 25, 35), ammo_bg_rect, border_radius=8)
-        pygame.draw.rect(screen, (0, 180, 255), ammo_bg_rect, 3, border_radius=8)
+        # === AMMO COUNTER HUD ===
+        ammo_bg = pygame.Rect(W - 225, H - 78, 205, 63)
+        pygame.draw.rect(screen, (18, 23, 33), ammo_bg, border_radius=8)
+        pygame.draw.rect(screen, (0, 175, 255), ammo_bg, 3, border_radius=8)
         
-        ammo_label = self.tiny_font.render("SHELLS", True, (150, 180, 255))
-        screen.blit(ammo_label, (W - 210, H - 68))
+        ammo_label = self.tiny_font.render("SHELLS", True, (145, 175, 255))
+        screen.blit(ammo_label, (W - 215, H - 71))
         
-        ammo_count = self.large_font.render("50", True, (255, 200, 0))
-        screen.blit(ammo_count, (W - 150, H - 60))
+        ammo_count = self.large_font.render("50", True, (255, 195, 0))
+        screen.blit(ammo_count, (W - 155, H - 63))
 
     # Legacy compatibility
     def draw_gun(self, screen, show_flash=False):
         self.draw_gun_doom(screen, show_flash)
 
     # ══════════════════════════════════════════════════════════
-    #   NAME INPUT SCREEN (DOOM STYLE)
+    #   PHẦN CÒN LẠI GIỮ NGUYÊN TỪ CODE GỐC
     # ══════════════════════════════════════════════════════════
+    
     def draw_name_input(self, screen, player_name):
         """DOOM-style name input screen với hiệu ứng sci-fi đầy đủ"""
         W, H = self.width, self.height
@@ -920,7 +1058,7 @@ class UI:
         self.buttons[button_id] = (x, y, w, h)
 
     # ══════════════════════════════════════════════════════════
-    #   MENU, HUD, AND OTHER UI SCREENS
+    #   PHẦN CÒN LẠI - GIỐNG HỆT CODE GỐC
     # ══════════════════════════════════════════════════════════
     def draw_menu(self,screen,question_count):
         t=self.title_font.render("Monster Quiz Shooter",True,(255,215,0))
